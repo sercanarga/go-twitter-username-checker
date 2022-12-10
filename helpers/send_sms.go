@@ -8,6 +8,7 @@ type SMS struct {
 	Err      error
 }
 
+// @todo: integrate sms provider
 func SendSMS(sms SMS) {
 	if sms.Err != nil {
 		fmt.Println(sms.Err.Error())

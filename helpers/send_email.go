@@ -1,10 +1,13 @@
 package helpers
 
-import "gopkg.in/gomail.v2"
+import (
+	"gopkg.in/gomail.v2"
+	"strconv"
+)
 
 type EmailStruct struct {
 	Host           string
-	Port           int
+	Port           string
 	SenderEmail    string
 	SenderPassword string
 	ToEmail        string
@@ -19,7 +22,8 @@ func SendEmail(email EmailStruct) (bool, error) {
 	m.SetHeader("Subject", email.Subject)
 	m.SetBody("text", email.Body)
 
-	d := gomail.NewDialer(email.Host, email.Port, email.SenderEmail, email.SenderPassword)
+	port, _ := strconv.Atoi(email.Port)
+	d := gomail.NewDialer(email.Host, port, email.SenderEmail, email.SenderPassword)
 
 	if err := d.DialAndSend(m); err != nil {
 		return false, err

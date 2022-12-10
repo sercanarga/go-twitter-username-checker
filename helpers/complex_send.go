@@ -1,34 +1,36 @@
 package helpers
 
-func SendErrorComplex(err error) {
-	SendEmail(EmailStruct{
-		Host:           "mail.sercanarga.com",
-		Port:           465,
-		SenderEmail:    "twitter.bot@sercanarga.com",
-		SenderPassword: "bg1qs!5bMz65MiClp",
-		ToEmail:        "mail@sercanarga.com",
-		Subject:        "HATA - Düşen Hesaplar",
-		Body:           err.Error(),
-	})
+import "os"
 
+func SendErrorComplex(err error) {
 	SendSMS(SMS{
 		Err: err,
+	})
+
+	SendEmail(EmailStruct{
+		Host:           os.Getenv("EMAIL_HOST"),
+		Port:           os.Getenv("EMAIL_PORT"),
+		SenderEmail:    os.Getenv("EMAIL_SENDER"),
+		SenderPassword: os.Getenv("EMAIL_PASSWORD"),
+		ToEmail:        os.Getenv("EMAIL_TO"),
+		Subject:        os.Getenv("EMAIL_ERROR_SUBJECT"),
+		Body:           err.Error(),
 	})
 }
 
 func SendDownAccount(v string) {
 	SendSMS(SMS{
 		Username: v,
-		Message:  "düştü",
+		Message:  "down",
 	})
 
 	SendEmail(EmailStruct{
-		Host:           "mail.sercanarga.com",
-		Port:           465,
-		SenderEmail:    "twitter.bot@sercanarga.com",
-		SenderPassword: "bg1qs!5bMz65MiClp",
-		ToEmail:        "mail@sercanarga.com",
-		Subject:        "Düşen Hesap (" + v + ")",
+		Host:           os.Getenv("EMAIL_HOST"),
+		Port:           os.Getenv("EMAIL_PORT"),
+		SenderEmail:    os.Getenv("EMAIL_SENDER"),
+		SenderPassword: os.Getenv("EMAIL_PASSWORD"),
+		ToEmail:        os.Getenv("EMAIL_TO"),
+		Subject:        os.Getenv("EMAIL_SUCCESS_SUBJECT"),
 		Body:           v,
 	})
 }
